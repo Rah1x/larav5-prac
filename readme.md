@@ -6,3 +6,4 @@ This is an example of implementation of Laravel 5. Im giving a lot of personal t
 3. See Controller.php, Route.php, adminBasicAuth.php (middleware) etc to get the idea how things are going.
 4. See the login.php controller
 5. see layout and login views
+6. Used LESS for the template css
