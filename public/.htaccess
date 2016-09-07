@@ -1,0 +1,71 @@
+Header append X-FRAME-OPTIONS "SAMEORIGIN"
+
+# Secure htaccess File
+<FilesMatch "\.(htaccess|ini|htpasswd|log|ftpquota|error_log|ftpquota|env)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
+
+# Disable Directory Browsing
+Options -Indexes
+
+# Prevent Folder Listing
+IndexIgnore *
+
+#/ Extra settings due to php.ini not available
+<IfModule mod_php5.c>
+    php_flag register_globals Off
+    php_flag magic_quotes_gpc Off
+    php_value upload_max_filesize '15M'
+    php_value post_max_size '16M'
+    php_flag expose_php Off
+    php_flag zlib.output_compression On
+    php_value zlib.output_compression_level 3
+    php_flag allow_url_include Off
+    php_value apc.shm_size '512M'
+    php_value apc.shm_strings_buffer '16M'
+    php_value apc.ttl '86400'
+    php_value apc.gc_ttl '86400'
+    php_value opcache.memory_consumption '128'
+</IfModule>
+
+###################################################
+
+# serve custom error pages
+ErrorDocument 403 "<title>410 Gone</title><h2>GONE / 410</h2><b>Resource is no longer available!</b><p>The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page.</p><p>If you think this is a server error, please contact the <a href=#>webmaster</a>.</p><h2>Error 410</h2>"
+#ErrorDocument 404 "<title>410 Gone</title><h2>GONE / 410</h2><b>Resource is no longer available!</b><p>The requested URL is no longer available on this server and there is no forwarding address. If you followed a link from a foreign page, please contact the author of this page.</p><p>If you think this is a server error, please contact the <a href=#>webmaster</a>.</p><h2>Error 410</h2>"
+#ErrorDocument 404 http://larav-admin/404
+
+#/ Prevent XSS
+RewriteEngine On
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+RewriteRule ^(.*)$ - [G,L]
+RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+RewriteRule .* - [G]
+
+###################################################
+
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews
+    </IfModule>
+
+    RewriteEngine On
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+</IfModule>
