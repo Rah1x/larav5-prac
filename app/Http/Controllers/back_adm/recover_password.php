@@ -74,9 +74,10 @@ class recover_password extends Controller
         if(empty($fv_errors) || (count($fv_errors)<=0))
         {
             ##/ Check Credentials
-            $email_add = mysql_real_escape_string($_POST['email_add']);
+            $email_add = format_str::format_str($POST['email_add']);
             $chk_email_add = Admin_user::where('email_add', $email_add)->first();
-            //r::var_dumpx($chk_email_add); die();
+            //r::var_dumpx($POST, $email_add, $chk_email_add);
+            //r::last_query(); die();
 
             #/ Check If Account Exists
             if(empty($chk_email_add))
@@ -103,7 +104,6 @@ class recover_password extends Controller
                     r::var_dumpx($user_prof, $pass_new, $pass_w);
 
                     #/ Setup & Send Email
-
                     //$site_url = SITE_URL.'back_adm/';
                 }
             }

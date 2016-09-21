@@ -54,12 +54,12 @@ class sec_captcha extends Controller
 
           /*//For dark BG
           $color1 = rand(240, 210);
-          $color2 = rand(080, 240);
+          $color2 = rand(80, 240);
           $color3 = rand(20, 235);*/
 
           //For light BG
           $color1 = rand(10, 30);
-          $color2 = rand(080, 90);
+          $color2 = rand(80, 90);
           $color3 = rand(20, 75);
 
           $txt_color[$count] = @ImageColorAllocate($img_handle, $color1, $color2, $color3);

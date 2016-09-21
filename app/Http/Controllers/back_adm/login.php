@@ -87,7 +87,7 @@ class login extends Controller
         else
         {
             #/ Check if User Exists
-            $email_add = mysql_real_escape_string($POST['email_add']);
+            $email_add = $POST['email_add'];
             $pass_w = encHelper::enc($email_add, $POST['pass_w']);
             //r::var_dumpx($email_add, $pass_w);
 

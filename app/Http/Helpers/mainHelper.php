@@ -36,6 +36,8 @@ class mainHelper
 
     }//end func...
 
+
+    /** Session Methods **/
     public static function sess()
     {
         $SESS = \Request::session()->all();
@@ -58,6 +60,8 @@ class mainHelper
         \Request::session()->save();
     }
 
+
+
     public static function cur_route()
     {
         $cur_route = \Request::route()->getName();
@@ -70,7 +74,8 @@ class mainHelper
 
         $msg_v = '';
         if(is_array($msg)){
-        $msg_v = 'Please clear the following Error(s):<br /><br />- '; $fv_msg_ar=array();
+        if($succ==false){$msg_v = 'Please clear the following Error(s):<br /><br />- '; }
+        $fv_msg_ar=array();
         foreach($msg as $fv_k=>$fv_v){$fv_msg_ar = array_merge($fv_msg_ar, $fv_v);}
         $msg_v.=@implode('<br />- ', $fv_msg_ar);
         } else {
